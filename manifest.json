@@ -3,9 +3,8 @@
   "short_name": "SleepSounds",
   "start_url": ".",
   "display": "standalone",
-  "background_color": "#050510",
+  "background_color": "#000010",
   "theme_color": "#050510",
-  "description": "A calming sound app for stargazers and dreamers.",
   "icons": [
     {
       "src": "icon-192.png",
