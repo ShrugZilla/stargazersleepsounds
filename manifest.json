@@ -1,10 +1,11 @@
 {
   "name": "Stargazer Sleep Sounds",
-  "short_name": "SleepSounds",
+  "short_name": "Stargazer",
   "start_url": "/stargazersleepsounds/",
   "display": "standalone",
   "background_color": "#050510",
   "theme_color": "#050510",
+  "orientation": "portrait",
   "icons": [
     {
       "src": "icon-192.png",
