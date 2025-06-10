@@ -1,11 +1,11 @@
+
 {
-  "name": "Stargazer Sleep Sounds",
+  "name": "Stargazer Sleep App",
   "short_name": "Stargazer",
-  "start_url": "/stargazersleepsounds/",
+  "start_url": ".",
   "display": "standalone",
-  "background_color": "#050510",
-  "theme_color": "#050510",
-  "orientation": "portrait",
+  "background_color": "#000010",
+  "theme_color": "#000010",
   "icons": [
     {
       "src": "icon-192.png",
