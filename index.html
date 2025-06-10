@@ -1,73 +1,228 @@
-
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Stargazer Sleep Sounds</title>
-  <link rel="manifest" href="manifest.json" />
-  <link rel="icon" href="icons/icon-192.png" />
-  <meta name="theme-color" content="#050510" />
-  <script>
-    if ('serviceWorker' in navigator) {
-      navigator.serviceWorker.register('./service-worker.js');
-    }
-  </script>
+  <title>Sleep Sound App</title>
   <style>
+    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
+
     body {
-      background: #050510;
+      font-family: 'Orbitron', sans-serif;
+      background-color: #050510;
       color: #e0e6f0;
-      font-family: sans-serif;
       padding: 2rem;
+      margin: 0;
+      overflow: hidden;
     }
-    .sound { margin-bottom: 2rem; }
-    h1 { text-align: center; color: white; }
-    audio { width: 100%; }
-    input[type="range"] { width: 100%; }
+    body::before {
+      content: '';
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background: radial-gradient(circle at 20% 30%, #222644, transparent),
+                  radial-gradient(circle at 80% 70%, #111322, transparent);
+      background-color: #000010;
+      z-index: -3;
+    }
+    .stars, .constellations {
+      position: fixed;
+      width: 100%;
+      height: 100%;
+      top: 0; left: 0;
+      background: transparent;
+      z-index: -2;
+      overflow: hidden;
+      pointer-events: none;
+    }
+    .star {
+      position: absolute;
+      background: white;
+      border-radius: 50%;
+      width: 2px;
+      height: 2px;
+      animation: twinkle 2s infinite ease-in-out;
+    }
+    .constellation-img {
+      position: absolute;
+      width: 300px;
+      height: auto;
+      opacity: 0.5;
+    }
+    .constellation-img.one { top: 10%; left: 10%; }
+    .constellation-img.two { top: 40%; left: 60%; }
+    .constellation-img.three { bottom: 10%; right: 15%; }
+
+    @keyframes twinkle {
+      0%, 100% { opacity: 0.2; }
+      50% { opacity: 1; }
+    }
+    h1 {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+      color: #ffffff;
+      text-shadow: 0 0 10px #88f;
+    }
+    .sound {
+      background: rgba(20, 24, 40, 0.8);
+      padding: 1rem;
+      margin: 1rem 0;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+    }
+    label, button {
+      display: block;
+      margin-top: 0.5rem;
+    }
+    button {
+      background: #1f2a44;
+      color: #fff;
+      border: none;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.3s;
+    }
+    button:hover {
+      background: #2e3d60;
+      transform: scale(1.05);
+    }
+    input[type="range"] {
+      width: 100%;
+    }
+    .timer {
+      margin-top: 2rem;
+      text-align: center;
+    }
+    .timer input {
+      width: 80px;
+      padding: 0.5rem;
+      border: none;
+      border-radius: 6px;
+      background: #fff;
+      color: #000;
+      margin: 0 0.5rem;
+    }
   </style>
 </head>
 <body>
+  <div class="stars"></div>
+  <div class="constellations">
+    <img class="constellation-img one" src="https://upload.wikimedia.org/wikipedia/commons/4/4c/Ursa_Major_constellation_map.png" alt="Ursa Major">
+    <img class="constellation-img two" src="https://upload.wikimedia.org/wikipedia/commons/3/32/Orion_IAU.svg" alt="Orion">
+    <img class="constellation-img three" src="https://upload.wikimedia.org/wikipedia/commons/f/f4/Scorpius_constellation_map.png" alt="Scorpius">
+  </div>
+
+  <script>
+    const starsContainer = document.querySelector('.stars');
+    for (let i = 0; i < 100; i++) {
+      const star = document.createElement('div');
+      star.className = 'star';
+      star.style.top = `${Math.random() * 100}%`;
+      star.style.left = `${Math.random() * 100}%`;
+      star.style.animationDelay = `${Math.random() * 2}s`;
+      starsContainer.appendChild(star);
+    }
+  </script>
+
   <h1>✨ Stargazer Sleep Sounds ✨</h1>
+
   <div class="sound">
     <h3>🌧 Roof Rainfall</h3>
     <audio id="rain" loop>
       <source src="assets/roof-rain.mp3" type="audio/mp3">
     </audio>
-    <button onclick="toggle('rain')">Play/Pause</button>
-    <input type="range" min="0" max="1" step="0.01" value="1" onchange="setVolume('rain', this.value)" />
+    <button onclick="toggleSound('rain')">Play / Pause</button>
+    <label>
+      Volume
+      <input type="range" min="0" max="1" step="0.01" value="1" onchange="setVolume('rain', this.value)" />
+    </label>
   </div>
+
   <div class="sound">
-    <h3>⚡ Thunderstorm</h3>
+    <h3>⚡ Thunderstorm Ambiance</h3>
     <audio id="thunder">
       <source src="assets/thunder.mp3" type="audio/mp3">
     </audio>
-    <button onclick="toggleThunder()">Play/Pause</button>
-    <input type="range" min="0" max="1" step="0.01" value="1" onchange="setVolume('thunder', this.value)" />
+    <button onclick="toggleThunderSound()">Play / Pause</button>
+    <label>
+      Volume
+      <input type="range" min="0" max="1" step="0.01" value="1" onchange="setVolume('thunder', this.value)" />
+    </label>
   </div>
+
   <div class="sound">
     <h3>💨 Wind</h3>
     <audio id="wind" loop>
       <source src="assets/wind.mp3" type="audio/mp3">
     </audio>
-    <button onclick="toggle('wind')">Play/Pause</button>
-    <input type="range" min="0" max="1" step="0.01" value="1" onchange="setVolume('wind', this.value)" />
+    <button onclick="toggleSound('wind')">Play / Pause</button>
+    <label>
+      Volume
+      <input type="range" min="0" max="1" step="0.01" value="1" onchange="setVolume('wind', this.value)" />
+    </label>
   </div>
+
+  <div class="timer">
+    <h3>⏲ Sleep Timer (minutes)</h3>
+    <input type="number" id="timerInput" min="1" placeholder="10" />
+    <button onclick="startTimer()">Start Timer</button>
+    <p id="countdownDisplay"></p>
+  </div>
+
   <script>
-    function toggle(id) {
-      const a = document.getElementById(id);
-      a.paused ? a.play() : a.pause();
-    }
-    function setVolume(id, v) {
-      document.getElementById(id).volume = v;
-    }
-    function toggleThunder() {
-      const a = document.getElementById("thunder");
-      if (a.paused) {
-        a.play();
-        a.onended = () => setTimeout(() => a.play(), 45000);
+    function toggleSound(id) {
+      const audio = document.getElementById(id);
+      if (audio.paused) {
+        audio.play();
       } else {
-        a.pause();
-        a.onended = null;
+        audio.pause();
+      }
+    }
+
+    function setVolume(id, value) {
+      const audio = document.getElementById(id);
+      audio.volume = value;
+    }
+
+    function startTimer() {
+      const minutes = parseInt(document.getElementById('timerInput').value);
+      const countdownDisplay = document.getElementById('countdownDisplay');
+      if (!isNaN(minutes)) {
+        let secondsLeft = minutes * 60;
+        countdownDisplay.textContent = formatTime(secondsLeft);
+
+        const interval = setInterval(() => {
+          secondsLeft--;
+          if (secondsLeft <= 0) {
+            clearInterval(interval);
+            document.querySelectorAll('audio').forEach(audio => audio.pause());
+            countdownDisplay.textContent = 'Timer ended. Sounds stopped.';
+          } else {
+            countdownDisplay.textContent = formatTime(secondsLeft);
+          }
+        }, 1000);
+      } else {
+        alert('Please enter a valid number of minutes.');
+      }
+    }
+
+    function formatTime(seconds) {
+      const m = Math.floor(seconds / 60);
+      const s = seconds % 60;
+      return `${m}:${s.toString().padStart(2, '0')}`;
+    }
+
+    function toggleThunderSound() {
+      const thunder = document.getElementById('thunder');
+      if (thunder.paused) {
+        thunder.play();
+        thunder.onended = () => {
+          setTimeout(() => thunder.play(), 45000);
+        };
+      } else {
+        thunder.pause();
+        thunder.onended = null;
       }
     }
   </script>
