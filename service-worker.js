@@ -1,24 +1,22 @@
 
-self.addEventListener('install', event => {
-  event.waitUntil(
-    caches.open('v1').then(cache => {
+self.addEventListener('install', e => {
+  e.waitUntil(
+    caches.open('stargazer').then(cache => {
       return cache.addAll([
         './',
-        'index.html',
-        'style.css',
-        'app.js',
-        'sample.mp3',
-        'icon-192.png',
-        'icon-512.png'
+        './index.html',
+        './manifest.json',
+        './assets/wind.mp3',
+        './assets/thunder.mp3',
+        './assets/roof-rain.mp3',
+        './icons/icon-192.png',
+        './icons/icon-512.png'
       ]);
     })
   );
 });
-
-self.addEventListener('fetch', event => {
-  event.respondWith(
-    caches.match(event.request).then(response => {
-      return response || fetch(event.request);
-    })
+self.addEventListener('fetch', e => {
+  e.respondWith(
+    caches.match(e.request).then(response => response || fetch(e.request))
   );
 });
